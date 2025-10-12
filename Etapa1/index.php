@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header con navegación sticky -->
     <header class="header">
         <nav class="header__nav">
             <div class="nav__brand">
@@ -30,9 +29,7 @@
         </nav>
     </header>
 
-    <!-- Contenido principal -->
     <main class="main">
-        <!-- Sección Inicio -->
         <section id="inicio" class="hero">
             <div class="hero__container">
                 <div class="hero__image">
@@ -62,7 +59,6 @@
             </div>
         </section>
 
-        <!-- Sección Noticias -->
         <section id="noticias" class="news">
             <div class="news__container">
                 <h2 class="news__title">Últimas Noticias</h2>
@@ -145,7 +141,6 @@
             </div>
         </section>
 
-        <!-- Sección Galería -->
         <section id="galeria" class="gallery">
             <div class="gallery__container">
                 <h2 class="gallery__title">Galería de Momentos</h2>
@@ -237,7 +232,6 @@
             </div>
         </section>
 
-        <!-- Sección Contacto -->
         <section id="contacto" class="contact">
             <div class="contact__container">
                 <h2 class="contact__title">Contáctanos</h2>
@@ -271,9 +265,16 @@
                                 <span class="contact__value">Facultad de Informática, Edificio A</span>
                             </div>
                         </div>
+
+                        <button id="mostrar-datos" class="form__button" style="margin-top: 2rem;">
+                            Mostrar Últimos Mensajes Recibidos
+                        </button>
+                        <div id="contenedor-datos" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; background-color: #f0f0f0;">
+                            <p>Presiona el botón para cargar los últimos 5 mensajes.</p>
+                        </div>
                     </div>
                     
-                    <form class="contact__form" action="form/process.php" method="GET">
+                    <form class="contact__form" action="php/insert.php" method="POST">
                         <h3 class="form__title">Envíanos un mensaje</h3>
                         <div class="form__group">
                             <label for="name" class="form__label">Nombre completo</label>
@@ -294,7 +295,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer__container">
             <p class="footer__text">
