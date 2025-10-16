@@ -1,28 +1,22 @@
 <?php
-/**
- * @file insert.php
- * @description Recibe los datos del formulario por POST y los guarda en la Base de Datos.
- */
-
 // Incluir el archivo de conexión
 include 'conex.php'; 
 
-// Recibir los datos del formulario (Requisito PHP)
+// Recibir los datos del formulario
 $nombre = $_POST['name'] ?? 'No especificado';
 $correo = $_POST['email'] ?? 'No especificado';
 $mensaje = $_POST['message'] ?? 'No especificado';
 
-// Limpieza de datos (seguridad)
+// Limpieza de datos
 $nombre_limpio = $con->real_escape_string(htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'));
 $correo_limpio = $con->real_escape_string(htmlspecialchars($correo, ENT_QUOTES, 'UTF-8'));
 $mensaje_limpio = $con->real_escape_string(htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8'));
 
-// Los datos recibidos se guardarán en una Tabla de la BD (Requisito PHP)
-// Se asume una tabla llamada 'contactos' con columnas: id, nombre, email, mensaje, fecha_envio
+// Los datos recibidos se guardarán en una Tabla de la BD
 $stmt = $con->prepare("INSERT INTO contactos (nombre, email, mensaje, fecha_envio) VALUES (?, ?, ?, NOW())");
 $stmt->bind_param("sss", $nombre_limpio, $correo_limpio, $mensaje_limpio);
 
-// Notificar al usuario (Requisito PHP)
+// Notificar al usuario
 if ($stmt->execute()) {
     $success = true;
     $status_message = "¡Datos guardados con éxito en la base de datos! ✅";

@@ -1,9 +1,4 @@
 <?php
-/**
- * @file list.php
- * @description Consulta la tabla de contactos y devuelve los últimos 5 registros en formato JSON.
- */
-
 header('Content-Type: application/json');
 
 // Incluir el archivo de conexión
