@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header con navegación sticky -->
     <header class="header">
         <nav class="header__nav">
             <div class="nav__brand">
@@ -30,9 +29,7 @@
         </nav>
     </header>
 
-    <!-- Contenido principal -->
     <main class="main">
-        <!-- Sección Inicio -->
         <section id="inicio" class="hero">
             <div class="hero__container">
                 <div class="hero__image">
@@ -62,90 +59,71 @@
             </div>
         </section>
 
-        <!-- Sección Noticias -->
         <section id="noticias" class="news">
             <div class="news__container">
                 <h2 class="news__title">Últimas Noticias</h2>
                 <div class="news__grid">
-                    <article class="news__item">
-                        <div class="news__image">
-                            <img src="assets/img/hackaton.jpg" alt="Hackathón Universitario 2024">
-                            <div class="news__image-placeholder">
-                                <span class="placeholder-icon">💻</span>
-                                <p class="placeholder-text">Hackathón 2024</p>
-                            </div>
-                        </div>
-                        
-                        <div class="news__content">
-                            <div class="news__header">
-                                <span class="news__date">15 Sep 2024</span>
-                                <span class="news__category">Académico</span>
-                            </div>
-                            <h3 class="news__item-title">Hackathón Universitario 2024</h3>
-                            <p class="news__text">
-                                El próximo mes se realizará el Hackathón Universitario más grande del año. 
-                                Los estudiantes de informática podrán participar en equipos de hasta 4 personas 
-                                para desarrollar soluciones innovadoras. Las inscripciones están abiertas hasta 
-                                el 30 de septiembre. ¡No te pierdas esta oportunidad de demostrar tus habilidades!
-                            </p>
-                            <a href="#" class="news__link">Leer más</a>
-                        </div>
-                    </article>
+                    <?php
+                    // 1. Incluir la conexión a la base de datos
+                    include 'php/conex.php';
 
-                    <article class="news__item">
-                        <div class="news__image">
-                            <img src="assets/img/ia.jpg" alt="Nuevo Laboratorio de IA">
-                            <div class="news__image-placeholder">
-                                <span class="placeholder-icon">🤖</span>
-                                <p class="placeholder-text">Laboratorio IA</p>
-                            </div>
-                        </div>
-                        
-                        <div class="news__content">
-                            <div class="news__header">
-                                <span class="news__date">12 Sep 2024</span>
-                                <span class="news__category">Tecnología</span>
-                            </div>
-                            <h3 class="news__item-title">Nuevo Laboratorio de IA</h3>
-                            <p class="news__text">
-                                La facultad inauguró un moderno laboratorio equipado con las últimas tecnologías 
-                                para el desarrollo de proyectos de inteligencia artificial y machine learning. 
-                                Los estudiantes de tercer año en adelante podrán acceder a estos recursos para 
-                                sus proyectos de tesis e investigación.
-                            </p>
-                            <a href="#" class="news__link">Leer más</a>
-                        </div>
-                    </article>
+                    // 2. Crear la consulta SQL usando JOIN para obtener los nombres del autor y la categoría
+                    $sql = "SELECT 
+                                articulos.titulo,
+                                articulos.resumen,
+                                articulos.fecha_publicacion,
+                                autores.nombre AS nombre_autor,
+                                categorias.nombre_categoria
+                            FROM 
+                                articulos
+                            JOIN 
+                                autores ON articulos.id_autor = autores.id_autor
+                            JOIN 
+                                categorias ON articulos.id_categoria = categorias.id_categoria
+                            ORDER BY 
+                                articulos.fecha_publicacion DESC
+                            LIMIT 3"; // Limitar a las 3 noticias más recientes
 
-                    <article class="news__item">
-                        <div class="news__image">
-                            <img src="assets/img/programacion.jpg" alt="Semana de la Programación">
-                            <div class="news__image-placeholder">
-                                <span class="placeholder-icon">⌨️</span>
-                                <p class="placeholder-text">Semana Programación</p>
-                            </div>
-                        </div>
-                        
-                        <div class="news__content">
-                            <div class="news__header">
-                                <span class="news__date">8 Sep 2024</span>
-                                <span class="news__category">Eventos</span>
-                            </div>
-                            <h3 class="news__item-title">Semana de la Programación</h3>
-                            <p class="news__text">
-                                Del 20 al 24 de septiembre celebraremos la Semana de la Programación con talleres, 
-                                charlas magistrales y competencias de código. Habrá actividades para todos los niveles, 
-                                desde principiantes hasta avanzados. Profesionales de la industria compartirán sus 
-                                experiencias y consejos para el desarrollo profesional.
-                            </p>
-                            <a href="#" class="news__link">Leer más</a>
-                        </div>
-                    </article>
+                    $result = $con->query($sql);
+
+                    // 3. Generar el HTML dinámicamente si hay resultados
+                    if ($result && $result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            // Formatear la fecha para que se vea mejor
+                            $fecha = date_create($row['fecha_publicacion']);
+                            $fecha_formateada = date_format($fecha, 'd M Y');
+                    ?>
+                            <article class="news__item">
+                                <div class="news__image">
+                                    <div class="news__image-placeholder">
+                                        <span class="placeholder-icon">📚</span>
+                                        <p class="placeholder-text"><?php echo htmlspecialchars($row['nombre_categoria']); ?></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="news__content">
+                                    <div class="news__header">
+                                        <span class="news__date"><?php echo $fecha_formateada; ?></span>
+                                        <span class="news__category"><?php echo htmlspecialchars($row['nombre_categoria']); ?></span>
+                                    </div>
+                                    <h3 class="news__item-title"><?php echo htmlspecialchars($row['titulo']); ?></h3>
+                                    <p class="news__text">
+                                        <?php echo htmlspecialchars($row['resumen']); ?>
+                                    </p>
+                                    <a href="#" class="news__link">Leer más</a>
+                                </div>
+                            </article>
+                            <?php
+                        } // Fin del bucle while
+                    } else {
+                        echo "<p>No hay noticias para mostrar en este momento.</p>";
+                    }
+                    // 4. Cerrar la conexión
+                    $con->close();
+                    ?>
                 </div>
             </div>
         </section>
-
-        <!-- Sección Galería -->
         <section id="galeria" class="gallery">
             <div class="gallery__container">
                 <h2 class="gallery__title">Galería de Momentos</h2>
@@ -237,7 +215,6 @@
             </div>
         </section>
 
-        <!-- Sección Contacto -->
         <section id="contacto" class="contact">
             <div class="contact__container">
                 <h2 class="contact__title">Contáctanos</h2>
@@ -271,9 +248,16 @@
                                 <span class="contact__value">Facultad de Informática, Edificio A</span>
                             </div>
                         </div>
+
+                        <button id="mostrar-datos" class="form__button" style="margin-top: 2rem;">
+                            Mostrar Últimos Mensajes Recibidos
+                        </button>
+                        <div id="contenedor-datos" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; background-color: #f0f0f0;">
+                            <p>Presiona el botón para cargar los últimos 5 mensajes.</p>
+                        </div>
                     </div>
                     
-                    <form class="contact__form" action="form/process.php" method="GET">
+                    <form class="contact__form" action="php/insert.php" method="POST">
                         <h3 class="form__title">Envíanos un mensaje</h3>
                         <div class="form__group">
                             <label for="name" class="form__label">Nombre completo</label>
@@ -294,7 +278,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer__container">
             <p class="footer__text">
