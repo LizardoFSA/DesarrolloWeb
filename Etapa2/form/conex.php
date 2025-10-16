@@ -1,9 +1,9 @@
 <?php
 // CREDENCIALES DE LA BASE DE DATOS
-$host = "localhost";
-$user = "root"; 
-$pass = ""; 
-$db = "nombre_bd"; 
+$host = "mysql.inf.uct.cl";
+$user = "lsalazar"; 
+$pass = "lsalazar2021"; 
+$db = "lsalazar"; 
 
 // Crear conexión
 $con = new mysqli($host, $user, $pass, $db);
