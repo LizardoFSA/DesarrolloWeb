@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() { // Función Principal
         }
     }
 
-    // FUNCIONALIDAD 4: FETCH para Listar Datos (Requisito BD/JSON)
+    // FUNCIONALIDAD 4: FETCH para Listar Datos
     const btnMostrarDatos = document.getElementById('mostrar-datos');
     const contenedorDatos = document.getElementById('contenedor-datos');
 
