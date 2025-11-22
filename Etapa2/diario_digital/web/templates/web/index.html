@@ -1,0 +1,230 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section id="inicio" class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold text-primary">Bienvenido al Diario Digital Estudiantil</h1>
+                    <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                        <strong>¡Nuevo!</strong> Mantente al día con las últimas noticias académicas.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div id="carouselHero" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="2"></button>
+                        </div>
+                        <div class="carousel-inner rounded">
+                            <div class="carousel-item active">
+                                <img src="{% static 'img/banner.jpg' %}" class="d-block w-100" alt="Banner" style="height: 400px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                                    <h5>Noticias Universitarias</h5>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'img/hackaton.jpg' %}" class="d-block w-100" alt="Hackathon" style="height: 400px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                                    <h5>Eventos Tecnológicos</h5>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'img/ia.jpg' %}" class="d-block w-100" alt="IA" style="height: 400px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                                    <h5>Investigación en IA</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <p class="lead text-center">
+                        Nuestro Diario Digital Estudiantil es un espacio creado por y para estudiantes de informática.
+                    </p>
+                    <div class="text-center mt-4">
+                        <a href="#noticias" class="btn btn-primary btn-lg">Ver Noticias 📰</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="noticias" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="display-5 fw-bold text-primary">Últimas Noticias</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                {% for noticia in noticias %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">{{ noticia.categoria.nombre_categoria|default:"General" }}</span>
+                                <small class="text-muted">{{ noticia.fecha_publicacion|date:"d M Y" }}</small>
+                            </div>
+                            <h5 class="card-title">{{ noticia.titulo }}</h5>
+                            <p class="card-text">{{ noticia.resumen|truncatewords:20 }}</p>
+                            <p class="text-muted small mb-3">
+                                <strong>Autor:</strong> {{ noticia.autor.username }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalNoticia">
+                                    Leer más
+                                </button>
+
+                                {% if user.is_authenticated %}
+                                <div>
+                                    <a href="{% url 'editar_noticia' noticia.id %}" class="btn btn-sm btn-warning" title="Editar">✏️</a>
+                                    <a href="{% url 'eliminar_noticia' noticia.id %}" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar esta noticia?');">🗑️</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-warning">No hay noticias publicadas aún. Ve al Panel Admin para crear una.</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="display-5 fw-bold text-primary">Galería de Momentos</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/labprograacion.jpg' %}" class="card-img-top" alt="Laboratorio" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">💻 Clase de Algoritmos</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/ganadoreshackaton.jpg' %}" class="card-img-top" alt="Hackathón" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">🏆 Ganadores Hackathón</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/graduados.png' %}" class="card-img-top" alt="Graduación" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">🎓 Graduación</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/conferencia.jpg' %}" class="card-img-top" alt="Conferencia" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">🤝 Conferencia Tech</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/labia2.jpeg' %}" class="card-img-top" alt="IA" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">🔬 Laboratorio IA</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow">
+                        <img src="{% static 'img/feria.jpg' %}" class="card-img-top" alt="Feria" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">🌟 Feria de Proyectos</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="display-5 fw-bold text-primary">Contáctanos</h2>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card shadow h-100">
+                        <img src="{% static 'img/facultad.jpg' %}" class="card-img-top" alt="Facultad" style="height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <h3 class="card-title">🏫 Información</h3>
+                            <p>Envíanos tus dudas o sugerencias.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">📧 diario@universidad.edu</li>
+                            </ul>
+                            
+                            <button id="mostrar-datos" class="btn btn-info mt-3 w-100">
+                                📩 Mostrar Últimos Mensajes Recibidos
+                            </button>
+                            <div id="contenedor-datos" class="alert alert-secondary mt-3">
+                                Presiona el botón para cargar mensajes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">✉️ Escríbenos</h3>
+                            <form id="contactForm"> <div class="mb-3">
+                                    <label for="name" class="form-label">Nombre completo</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo electrónico</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Mensaje</label>
+                                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Enviar Mensaje 📤</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
