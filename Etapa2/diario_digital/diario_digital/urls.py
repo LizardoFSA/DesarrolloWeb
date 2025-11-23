@@ -19,6 +19,13 @@ from django.contrib import admin
 from django.urls import path, include
 from web import views
 
+# ==========================================================================
+# ENRUTAMIENTO: URLs y Endpoints
+# ESTRUCTURA: Se centralizan todas las rutas de acceso (Frontend y API).
+# Se incluyen las rutas de autenticación nativas de Django (accounts/).
+# ==========================================================================
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),

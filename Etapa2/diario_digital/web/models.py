@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+# ==========================================================================
+# BASE DE DATOS: Modelos ORM
+# MEJORA: Se define la estructura de la BD usando clases de Python.
+# Django se encarga automáticamente de crear las tablas y relaciones (SQL),
+# garantizando integridad referencial y seguridad.
+# ==========================================================================
+
+
 # 1. Modelo para Categorías (ej: Tecnología, Eventos)
 class Categoria(models.Model):
     nombre_categoria = models.CharField(max_length=100)

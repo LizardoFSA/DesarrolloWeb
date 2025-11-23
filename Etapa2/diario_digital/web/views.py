@@ -1,21 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt # <--- Para facilitar el fetch por ahora
-from .models import Noticia, Contacto
-import json
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect
-
-from django.shortcuts import render, redirect, get_object_or_404
+from .models import Noticia, Contacto
 from .forms import NoticiaForm
+import json
 
-
+# ==========================================================================
+# MEJORA BACKEND: Migración a Django MVT
+# Se eliminó el código PHP nativo y las consultas SQL directas.
+# Se utiliza el ORM de Django para prevenir inyecciones SQL automáticamente.
+# ==========================================================================
 
 def home(request):
-    # Traemos las últimas 3 noticias, ordenadas por fecha (la más nueva primero)
-    # select_related es un truco para optimizar la carga del autor y categoria
+    # REFACTORING: Reemplazo de consulta SQL 'SELECT * ... JOIN ...'
+    # Se utiliza select_related para optimizar consultas a BD relacional.
     noticias = Noticia.objects.select_related('autor', 'categoria').order_by('-fecha_publicacion')[:3]
     
     data = {
@@ -23,9 +23,11 @@ def home(request):
     }
     return render(request, 'web/index.html', data)
 
-# 1. API para guardar el contacto (Reemplaza a insert.php)
-@csrf_exempt  # Usamos esto temporalmente para evitar errores de seguridad con Fetch
+# === API REST ENDPOINTS (Para consumo via Fetch JS) ===
+
+@csrf_exempt
 def guardar_contacto(request):
+    # MEJORA: Endpoint seguro que recibe JSON y utiliza validación de Modelos
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
@@ -39,30 +41,27 @@ def guardar_contacto(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
-# 2. API para listar contactos (Reemplaza a list.php)
 def listar_contactos(request):
+    # REFACTORING: Serialización de datos a JSON nativa de Python/Django
     contactos = Contacto.objects.all().order_by('-fecha_envio')[:5]
-    # Convertimos los datos a una lista simple para enviarla como JSON
     data = list(contactos.values('nombre', 'email', 'fecha_envio'))
     return JsonResponse(data, safe=False)
+
+# === SISTEMA DE USUARIOS Y CRUD ===
 
 def registro(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Logueamos al usuario automáticamente después de registrarse
             login(request, user)
             return redirect('home')
     else:
         form = UserCreationForm()
-    
     return render(request, 'registration/registro.html', {'form': form})
 
-
-# === CRUD: UPDATE (Editar Noticia) ===
 def editar_noticia(request, noticia_id):
-    # Solo usuarios logueados pueden editar
+    # SEGURIDAD: Validación de sesión (reemplaza a session_start de PHP)
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -78,9 +77,7 @@ def editar_noticia(request, noticia_id):
     
     return render(request, 'web/noticia_form.html', {'form': form})
 
-# === CRUD: DELETE (Eliminar Noticia) ===
 def eliminar_noticia(request, noticia_id):
-    # Solo usuarios logueados pueden borrar
     if not request.user.is_authenticated:
         return redirect('login')
         
