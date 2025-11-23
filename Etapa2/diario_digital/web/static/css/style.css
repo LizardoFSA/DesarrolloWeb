@@ -1,0 +1,541 @@
+/* ============================================
+   ESTILOS PERSONALIZADOS MODERNOS Y MINIMALISTAS
+   Complemento a Bootstrap 5
+   ============================================ */
+
+:root {
+    /* Paleta de colores moderna y minimalista */
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+    --white-color: #ffffff;
+    
+    /* Tipografía */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-size-base: 1rem;
+    --line-height-base: 1.6;
+    
+    /* Espaciado */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+    
+    /* Sombras */
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    
+    /* Bordes */
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 1rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: var(--line-height-base);
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    overflow-x: hidden;
+}
+
+/* ============================================
+   NAVBAR PERSONALIZADA - Estilo Minimalista
+   ============================================ */
+.navbar {
+    backdrop-filter: blur(10px);
+    background-color: rgba(13, 110, 253, 0.95) !important;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    position: relative;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--white-color);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 80%;
+}
+
+/* ============================================
+   SECCIÓN HERO - Diseño Limpio
+   ============================================ */
+#inicio {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: auto;
+}
+
+.display-4 {
+    font-weight: 700;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Alert personalizada */
+.alert-info {
+    border: none;
+    border-left: 4px solid var(--info-color);
+    background-color: rgba(13, 202, 240, 0.1);
+    color: var(--dark-color);
+}
+
+/* ============================================
+   CAROUSEL - Bordes Redondeados y Sombras
+   ============================================ */
+.carousel {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.carousel-inner {
+    border-radius: var(--border-radius-lg);
+}
+
+.carousel-item img {
+    filter: brightness(0.9);
+    transition: filter 0.3s ease;
+}
+
+.carousel-item:hover img {
+    filter: brightness(1);
+}
+
+.carousel-caption {
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-md);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+/* ============================================
+   BOTONES - Estilo Minimalista Moderno
+   ============================================ */
+.btn {
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   CARDS - Diseño Limpio y Elegante
+   ============================================ */
+.card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: var(--white-color);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.card-img-top {
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.card-text {
+    color: var(--secondary-color);
+    line-height: 1.7;
+}
+
+.card-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.5rem;
+}
+
+/* Badge personalizado */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   SECCIONES - Espaciado y Fondos
+   ============================================ */
+section {
+    position: relative;
+}
+
+.bg-light {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;
+}
+
+#noticias {
+    position: relative;
+}
+
+#noticias::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0d6efd 0%, #0dcaf0 100%);
+}
+
+/* ============================================
+   GALERÍA - Grid Responsivo Mejorado
+   ============================================ */
+#galeria .card {
+    overflow: hidden;
+    position: relative;
+}
+
+#galeria .card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+#galeria .card-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: var(--primary-color);
+    transition: height 0.3s ease;
+}
+
+#galeria .card:hover .card-body::before {
+    height: 100%;
+}
+
+/* ============================================
+   FORMULARIO - Inputs Modernos
+   ============================================ */
+.form-control,
+.form-select {
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   LIST GROUP - Listas Personalizadas
+   ============================================ */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* ============================================
+   MODAL - Diseño Limpio
+   ============================================ */
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 1.5rem 2rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 2rem;
+}
+
+/* ============================================
+   FOOTER - Diseño Moderno
+   ============================================ */
+footer {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+footer img {
+    transition: transform 0.3s ease;
+}
+
+footer img:hover {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   UTILIDADES PERSONALIZADAS
+   ============================================ */
+.lead {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--secondary-color);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.shadow {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* ============================================
+   ANIMACIONES SUAVES
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0d6efd 0%, #0a58ca 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #0a58ca 0%, #084298 100%);
+}
+
+/* ============================================
+   RESPONSIVE - Media Queries
+   ============================================ */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .carousel-item img {
+        height: 250px !important;
+    }
+    
+    #galeria .card-img-top {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand .fs-4 {
+        font-size: 1.2rem !important;
+    }
+    
+    .display-4 {
+        font-size: 1.75rem;
+    }
+    
+    .carousel-item img {
+        height: 200px !important;
+    }
+}
+
+/* ============================================
+   EFECTOS DE HOVER ADICIONALES
+   ============================================ */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   LOADING STATES (Para futuras mejoras)
+   ============================================ */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: var(--border-radius-md);
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ============================================
+   FIN DE ESTILOS PERSONALIZADOS
+   ============================================ */
+
+.nav__link {
+    color: #ecf0f1;
+    text-decoration: none;
+}
