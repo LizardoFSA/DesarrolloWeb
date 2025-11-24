@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() { 
+document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM Cargado. Inicializando script.");
 
     // ============================================================
@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // para mejorar el rendimiento del navegador.
     // ============================================================
     const sections = document.querySelectorAll('section');
-    
-    const observer = new IntersectionObserver((entries, observer) => { 
+
+    const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rootMargin: '0px 0px -100px 0px'
     });
 
-    sections.forEach(section => { 
+    sections.forEach(section => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
         section.style.transition = 'opacity 1s ease-out, transform 0.8s ease-out';
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Corrección: Se usa getElementById para evitar conflicto con Logout.
     // ============================================================
     const contactForm = document.getElementById('contactForm'); // <--- CAMBIO CLAVE AQUÍ
-    
+
     if (contactForm) {
         contactForm.addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
             console.log("Evento 'submit' interceptado. Enviando vía Fetch.");
 
             const formData = {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.status === 'success') {
                     alert(data.message);
-                    contactForm.reset(); 
+                    contactForm.reset();
                 } else {
                     alert('Error: ' + data.message);
                 }
@@ -105,30 +105,30 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnMostrarDatos) {
         btnMostrarDatos.addEventListener('click', () => {
             contenedorDatos.innerHTML = '<p>Cargando datos desde el servidor...</p>';
-            
-            fetch('/api/listar-contactos/') 
+
+            fetch('/api/listar-contactos/')
                 .then(response => {
                     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
                     return response.json();
                 })
                 .then(data => {
                     let html = '<h6>Últimos Contactos (Vía API Django)</h6>';
-                    
+
                     if (data.length > 0) {
                         html += '<ul class="list-group list-group-flush">';
                         data.forEach(item => {
-                            // Formateamos la fecha para que se vea bien
                             const fecha = new Date(item.fecha_envio).toLocaleDateString();
                             html += `<li class="list-group-item small">
-                                        <strong>${item.nombre}</strong>: ${item.email}<br>
-                                        <span class="text-muted" style="font-size:0.8em">${fecha}</span>
+                                        <strong>${item.nombre}</strong> <span class="text-muted">(${item.email})</span><br>
+                                        <i class="text-secondary">"${item.mensaje}"</i><br>
+                                        <span class="text-muted" style="font-size:0.75em">${fecha}</span>
                                      </li>`;
                         });
                         html += '</ul>';
                     } else {
                         html += '<p class="small text-muted">No hay mensajes recientes.</p>';
                     }
-                    contenedorDatos.innerHTML = html; 
+                    contenedorDatos.innerHTML = html;
                 })
                 .catch(error => {
                     console.error('Error:', error);

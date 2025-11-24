@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import Noticia, Contacto
-from .forms import NoticiaForm
+from .forms import NoticiaForm, RegistroForm
 import json
 
 # ==========================================================================
@@ -17,7 +17,7 @@ def home(request):
     # REFACTORING: Reemplazo de consulta SQL 'SELECT * ... JOIN ...'
     # Se utiliza select_related para optimizar consultas a BD relacional.
     noticias = Noticia.objects.select_related('autor', 'categoria').order_by('-fecha_publicacion')[:3]
-    
+
     data = {
         'noticias': noticias
     }
@@ -44,20 +44,21 @@ def guardar_contacto(request):
 def listar_contactos(request):
     # REFACTORING: Serialización de datos a JSON nativa de Python/Django
     contactos = Contacto.objects.all().order_by('-fecha_envio')[:5]
-    data = list(contactos.values('nombre', 'email', 'fecha_envio'))
+    data = list(contactos.values('nombre', 'email', 'mensaje', 'fecha_envio'))
     return JsonResponse(data, safe=False)
 
 # === SISTEMA DE USUARIOS Y CRUD ===
 
 def registro(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = RegistroForm()
+
     return render(request, 'registration/registro.html', {'form': form})
 
 def editar_noticia(request, noticia_id):
@@ -74,13 +75,13 @@ def editar_noticia(request, noticia_id):
             return redirect('home')
     else:
         form = NoticiaForm(instance=noticia)
-    
+
     return render(request, 'web/noticia_form.html', {'form': form})
 
 def eliminar_noticia(request, noticia_id):
     if not request.user.is_authenticated:
         return redirect('login')
-        
+
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     noticia.delete()
     return redirect('home')
